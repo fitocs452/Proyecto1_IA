@@ -19,7 +19,6 @@ public class SearchAlgorithms {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        ImageParser ip1 = new ImageParser(20);
         
         int size = 25;
         ImageParser parse = new ImageParser(size);
@@ -38,6 +37,23 @@ public class SearchAlgorithms {
                )
         );
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        
+        Bfs bfs = new Bfs(size, size, parse.getResized());
+        bfs.calcular();
+        
+        JFrame windowBFS = new JFrame();
+        windowBFS.setSize(450, 450);
+        windowBFS.setLocationRelativeTo(null);
+        windowBFS.setVisible(true);
+        windowBFS.add(
+                new GrafoGrafico(
+                    size,size, 
+                    parse.getResized(), bfs.getCompletePath(), 
+                    bfs.getNodosEvaluados(), bfs.getGrafo()
+               )
+        );
+        windowBFS.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
 }
