@@ -16,7 +16,6 @@ public class Nodo implements Comparable<Nodo> {
     private Grafo grafo;
     private int x;
     private int y;
-    private int distribuicion;
     private double funcionHeursitica;//costo del camino nodo actual al final -> Greedy
     private double distanciaDesdeInicio; //funcion G:costo del mejor camino encontrado->Dijsktra
  
@@ -30,11 +29,6 @@ public class Nodo implements Comparable<Nodo> {
     //método para comparar igualdad entre nodos
     public boolean equals(Nodo nodo) {
         return (this.x == nodo.x) && (this.y == nodo.y);
-    }
-    //método para calcular los nodos adyacentes de un nodo
-    
-    public void asignarDiagonal(int diagonal){
-        distribuicion = diagonal;
     }
     
     public boolean isObstaculo() {
@@ -107,9 +101,5 @@ public class Nodo implements Comparable<Nodo> {
     public String toString()
     {
         return "("+this.x +" ," + this.y +")";
-    }
-
-    public void setDistribuicion(int distribuicion) {
-        this.distribuicion = distribuicion;
     }
 }

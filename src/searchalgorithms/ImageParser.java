@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageOutputStream;
 
 /**
  *
@@ -29,24 +30,26 @@ public class ImageParser {
            // get the BufferedImage, using the ImageIO class
             BufferedImage image = ImageIO.read( new File("lab.png"));
             this.resized = this.resize(image);
+
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
     }
 
     public BufferedImage resize(BufferedImage originalImage) {
+        // Inicializamos el nuevo buffered con el tamaño indicado 
+        // y le indicamos que va a contener ints que representan ARGB
         BufferedImage resizedImage = new BufferedImage(this.size, this.size, BufferedImage.TYPE_INT_ARGB);
+        // Creamos la nueva imagen virtual 2D
 	Graphics2D g = resizedImage.createGraphics();
+        /*
+            1. Le mandamos la imagen a dibujar
+            2. Le mandamos la posicion x en 0 para empezar a dibujar allí
+            3. Le mandamos la posicion y en 0 para empezar a dibujar allí
+            4. Width: el ancho de la nueva imagen
+            5. Height: el alto de la nueva imagen
+        */
 	g.drawImage(originalImage, 0, 0, this.size, this.size, null);
-	g.dispose();
-	g.setComposite(AlphaComposite.Src);
-
-	g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-	RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-	g.setRenderingHint(RenderingHints.KEY_RENDERING,
-	RenderingHints.VALUE_RENDER_QUALITY);
-	g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-	RenderingHints.VALUE_ANTIALIAS_ON);
         return resizedImage;
     }
   
