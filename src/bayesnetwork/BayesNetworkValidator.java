@@ -14,7 +14,7 @@ import java.util.HashSet;
  *
  * @author amorales
  */
-public class BayesNetworkValidator extends grammarBayesBaseVisitor{
+public class BayesNetworkValidator extends grammarBayesBaseVisitor {
     private HashSet<String> variables = new HashSet();
     private ArrayList<BayesNode> network = new ArrayList();
     private boolean isCondition = false;
