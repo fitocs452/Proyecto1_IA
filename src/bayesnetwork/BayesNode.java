@@ -38,6 +38,10 @@ public class BayesNode implements Comparable<BayesNode>{
         return prevNodes;
     }
 
+    public void AddPrevNode(BayesNode b) {
+        this.prevNodes.add(b);
+    }
+    
     public void setPrevNodes(ArrayList<BayesNode> prevNodes) {
         this.prevNodes = prevNodes;
     }
