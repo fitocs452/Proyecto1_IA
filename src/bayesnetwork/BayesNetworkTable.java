@@ -24,6 +24,9 @@ public class BayesNetworkTable extends grammarBayesBaseVisitor {
         double probability = Double.parseDouble(probabilityString);
         actualNode = new BayesNode(exp, probability);
         
+        if (!this.bayesTable.contains(actualNode))
+            this.bayesTable.add(actualNode);
+            
         return null;
     }
 
@@ -42,6 +45,7 @@ public class BayesNetworkTable extends grammarBayesBaseVisitor {
         
         for (BayesNode bn: this.bayesTable) {
             String bnExpression = bn.getExpression().replace("!", "");
+//            System.out.println("bnExp: " + bnExpression);
             if (!temp.contains(bnExpression)) {
                 temp.add(bnExpression);
                 tableExpression += ":" + bnExpression;
@@ -65,7 +69,9 @@ public class BayesNetworkTable extends grammarBayesBaseVisitor {
             notBnExpression += bnExpression.substring(promisePos, bnExpression.length());
             
             double notExpProbabiliy = 1 - bn.getProbability();
+//            System.out.println("Prob1: " + bn.getProbability() + " ProbNegado: " + notExpProbabiliy);
             BayesNode notExpNode = new BayesNode(notBnExpression, notExpProbabiliy);
+//            System.out.println(notExpNode.toDisplay());
             
             // Agregamos la probabilidad normal
             all.add(bn);

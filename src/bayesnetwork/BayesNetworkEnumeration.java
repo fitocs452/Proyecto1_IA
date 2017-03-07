@@ -8,6 +8,7 @@ package bayesnetwork;
 import antlr4.grammarBayesBaseVisitor;
 import antlr4.grammarBayesParser;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -114,6 +115,119 @@ public class BayesNetworkEnumeration extends grammarBayesBaseVisitor {
     }
     
     public double enumerateNumerator(String exp, ArrayList<BayesNode> bayesNetwork) {
-        return 0;
+        double total = 0;
+        // totalPosibilities is the simulation of the sum(hiddenvariable)sum....
+        int totalPosibilities = (int)Math.pow(2, hiddenVarsNumerator.size());
+        for (int i = 0; i < totalPosibilities; i++) {
+            // 1 -> 01, 2 -> 10, tomamos la representacion en la tabla
+            String binRepresentation = Integer.toBinaryString(i);
+            // Normalizamos la representacion a la cantidad de variables que tenemos
+            while(binRepresentation.length() < hiddenVarsNumerator.size()) {
+                binRepresentation = "0" + binRepresentation;
+            }
+            
+            // Obtenemos la secuencia separada
+            char[] bin = binRepresentation.toCharArray();
+            String[] strHiddenVars = new String[hiddenVarsNumerator.size()];
+            
+            for (int j = 0; j < hiddenVarsNumerator.size(); j++) {
+                if (bin[j] == '0') {
+                    // si la variable es TRUE, la agregamos normal
+                    strHiddenVars[j] = hiddenVarsNumerator.get(j);
+                } else {
+                    // Si la varaible es FALSE, la negamos
+                    strHiddenVars[j] = "!" + hiddenVarsNumerator.get(j);
+                }
+            }
+            
+            String expExtended = generateNewExpression(exp, new ArrayList(Arrays.asList(strHiddenVars)));
+            total += evaluateExpression(expExtended, bayesNetwork);
+        }
+        return total;
+    }
+    
+    public double enumerateDenominator(String exp, ArrayList<BayesNode> bayesNetwork) {
+        double total = 0;
+        int totalHiddenVars = hiddenVarsDenominator.size();
+        if (totalHiddenVars == 0) {
+            return 1; // Return 1, porque no podemos dividir dentro de 0
+        }
+        
+        for (int i = 0; i < totalHiddenVars; i++) {
+            // 1 -> 01, 2 -> 10, tomamos la representacion en la tabla
+            String binRepresentation = Integer.toBinaryString(i);
+            // Normalizamos la representacion a la cantidad de variables que tenemos
+            while(binRepresentation.length() < hiddenVarsDenominator.size()) {
+                binRepresentation = "0" + binRepresentation;
+            }
+            
+            // Obtenemos la secuencia separada
+            char[] bin = binRepresentation.toCharArray();
+            String[] strHiddenVars = new String[hiddenVarsDenominator.size()];
+            
+            for (int j = 0; j < hiddenVarsDenominator.size(); j++) {
+                if (bin[j] == '0') {
+                    // si la variable es TRUE, la agregamos normal
+                    strHiddenVars[j] = hiddenVarsDenominator.get(j);
+                } else {
+                    // Si la varaible es FALSE, la negamos
+                    strHiddenVars[j] = "!" + hiddenVarsDenominator.get(j);
+                }
+            }
+            
+            String expExtended = generateNewExpression(exp, new ArrayList(Arrays.asList(strHiddenVars)));
+            total += evaluateExpression(expExtended, bayesNetwork);
+        }
+        
+        return total;
+    }
+    
+    public String generateNewExpression(String expression, ArrayList<String> vars) {
+        String expr = "";
+        for (int j = 0; j < vars.size(); j++) {
+            String variable = vars.get(j);
+            String tempVariable = variable.replace("!", "");
+            // Tomamos cada uno de los terminos que tenemos
+            String[] expTerm = expression.split(":");
+            for (int i = 0; i < expTerm.length; i++) {
+                String term = expTerm[i];
+                String newString = "";
+                // Por cada variable
+                for (char ch: term.toCharArray()) {
+                    if (ch == (tempVariable.toCharArray()[0])) {
+                        newString += variable;
+                    } else {
+                        newString += ch;
+                    }
+                }
+                expr += newString + ":";
+                   
+            }
+            
+            // Iteramos sobre la nueva expresion
+            expression = expr;
+            if (j != vars.size() - 1)
+                expr = "";
+        }
+        return expr;
+    }
+    
+    public double evaluateExpression(String expression, ArrayList<BayesNode> completeNetwork) {
+        System.out.println(expression);
+        String[] arrayExpr = expression.split(":");
+        double prob = 1;
+        for (int i = 0; i < arrayExpr.length;i++) {
+            String expr = arrayExpr[i];
+            if (!expr.isEmpty()) {
+                for (BayesNode node: completeNetwork) {
+                    if (node.getExpression().equals(expr)) {
+                        prob *= node.getProbability();
+                    }
+                }
+            }
+            
+        }
+        System.out.println(prob);
+        return prob;
     }
 }

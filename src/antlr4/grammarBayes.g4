@@ -14,7 +14,7 @@ fragment DIGIT :'0'..'9' ;
 COMMAND : ('P' | 'p');
 NEGATION: '!';
 
-// Definicion de premisa, numbero e igualdad
+// Definicion de premisa, numero e igualdad
 PROMISE:   LETTER;
 NUM : DIGIT ('.'? DIGIT* )? ;
 EQUALS: '=';
@@ -40,14 +40,14 @@ operator: negation? PROMISE (',')?;
 // Kleen de operador 1
 op: operator* ;
 
-// Operador 1
+// Operador 2
 operator2: negation? PROMISE (',')?;
 // Kleen de operador 1
 op2: operator2* ;
 
 // Calculo de probabilidad: P(A, B .. | C )
 probability:
-    COMMAND '(' op (condition  op2)?  ')' EQUALS number
+    'P' '(' op (condition  op2)?  ')' EQUALS number
 ;
 
 condition: ('|'); 

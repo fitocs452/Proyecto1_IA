@@ -121,7 +121,7 @@ public class grammarBayesParser extends Parser {
 				setState(27); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( _la==COMMAND );
+			} while ( _la==T__4 );
 			}
 		}
 		catch (RecognitionException re) {
@@ -354,7 +354,6 @@ public class grammarBayesParser extends Parser {
 		public Op2Context op2() {
 			return getRuleContext(Op2Context.class,0);
 		}
-		public TerminalNode COMMAND() { return getToken(grammarBayesParser.COMMAND, 0); }
 		public ConditionContext condition() {
 			return getRuleContext(ConditionContext.class,0);
 		}
@@ -376,7 +375,7 @@ public class grammarBayesParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(55); match(COMMAND);
+			setState(55); match(T__4);
 			setState(56); match(T__3);
 			setState(57); op();
 			setState(61);
@@ -592,7 +591,7 @@ public class grammarBayesParser extends Parser {
 		"\2\2(+\3\2\2\2)\'\3\2\2\2)*\3\2\2\2*\t\3\2\2\2+)\3\2\2\2,.\5\22\n\2-,"+
 		"\3\2\2\2-.\3\2\2\2./\3\2\2\2/\61\7\n\2\2\60\62\7\7\2\2\61\60\3\2\2\2\61"+
 		"\62\3\2\2\2\62\13\3\2\2\2\63\65\5\n\6\2\64\63\3\2\2\2\658\3\2\2\2\66\64"+
-		"\3\2\2\2\66\67\3\2\2\2\67\r\3\2\2\28\66\3\2\2\29:\7\b\2\2:;\7\4\2\2;?"+
+		"\3\2\2\2\66\67\3\2\2\2\67\r\3\2\2\28\66\3\2\2\29:\7\3\2\2:;\7\4\2\2;?"+
 		"\5\b\5\2<=\5\20\t\2=>\5\f\7\2>@\3\2\2\2?<\3\2\2\2?@\3\2\2\2@A\3\2\2\2"+
 		"AB\7\5\2\2BC\7\f\2\2CD\5\2\2\2D\17\3\2\2\2EF\7\6\2\2F\21\3\2\2\2GH\7\t"+
 		"\2\2H\23\3\2\2\2IK\5\26\f\2JI\3\2\2\2KL\3\2\2\2LJ\3\2\2\2LM\3\2\2\2M\25"+

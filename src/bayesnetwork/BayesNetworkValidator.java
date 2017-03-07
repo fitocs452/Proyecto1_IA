@@ -64,18 +64,19 @@ public class BayesNetworkValidator extends grammarBayesBaseVisitor {
     public Object visitOperator2(grammarBayesParser.Operator2Context ctx) {
         for (int i = 0; i < ctx.getChildCount(); i++){
             String child = ctx.getChild(i).getText();
-            if (child.equals(",") && child.equals("!")) {
-                continue;
-            }
+            if (!child.equals(",") && !child.equals("!")) {
+//                continue;
             
-            if (isCondition) {
-                BayesNode search = this.findNodeInNetworkById(child);
-                currentNode.AddPrevNode(search);
-            } else {
-                currentNodeId = child;
-            }
             
+                if (isCondition) {
+                    BayesNode search = this.findNodeInNetworkById(child);
+                    currentNode.AddPrevNode(search);
+                } else {
+                    currentNodeId = child;
+                }
+            }
         }
+       
         return super.visitOperator2(ctx);
     }
     
@@ -122,13 +123,15 @@ public class BayesNetworkValidator extends grammarBayesBaseVisitor {
     public int validNetwork() {
         int totalNetwork = 0;
         for (BayesNode n : this.network) {
+//            System.out.println(n);
             int contPrev = n.getPrevNodes().size();
             contPrev = (int) Math.pow(2, contPrev);
             totalNetwork += contPrev;
         }
-        
+//        System.out.println("TotalProbs: " + totalNetwork);
         return totalNetwork;
     }
+
     
     public boolean validateUnique(String n) {
         boolean valid = true;

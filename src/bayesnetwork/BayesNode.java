@@ -6,12 +6,13 @@
 package bayesnetwork;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  *
  * @author amorales
  */
-public class BayesNode implements Comparable<BayesNode>{
+public class BayesNode {
     private String nodeId;
     private ArrayList<BayesNode> prevNodes = new ArrayList();
     private double probability;
@@ -61,22 +62,49 @@ public class BayesNode implements Comparable<BayesNode>{
     public void setExpression(String expression) {
         this.expression = expression;
     }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        BayesNode node = (BayesNode)o;
+//        System.out.println("Compare: " + o);
+        if (this.expression == null || node.getExpression() == null) {
+            boolean x = this.nodeId.equals(node.getNodeId());
+//            System.out.println("Compare: " + this.nodeId + " - " + node.getNodeId());
+//            System.out.println("IsEqual?" + x);
+            return x;
+        }
+        if (this.nodeId == null ) {
+            boolean x = this.expression.equals(node.getExpression());
+//            System.out.println("Compare: " + this.expression + " - " + node.getExpression());
+//            System.out.println("IsEqualEXP? " + x);
+            return x;
+        }
+        return this.nodeId.equals(node.getNodeId()); 
+    }
 
     @Override
-    public int compareTo(BayesNode t) {
-        if (this.nodeId == null) {
-            return this.expression.equals(t.getExpression()) ? 1: -1;
-        }
-        
-        return this.nodeId.equals(t.getNodeId()) ? 1: -1;
+    public int hashCode() {
+        int hash = 3;
+        hash = 59 * hash + Objects.hashCode(this.nodeId);
+        return hash;
     }
 
     @Override
     public String toString() {
-        return "BayesNode{" + "nodeId=" + nodeId + ", prevNodes=" + prevNodes + '}';
+        return "BayesNode{ " + nodeId + ", " + prevNodes + '}';
+    }
+    
+    public String specialToString() {
+        String prevNodes = "";
+        for (BayesNode bn: this.prevNodes) {
+            prevNodes += bn.getNodeId() + ", ";
+        }
+        
+        return "Id: " + nodeId + " prevNodes: " + (prevNodes.isEmpty() ? "No tiene" : prevNodes);
     }
 
     public String toDisplay() {
-        return "BayesNode{" + "probability=" + probability + ", expression=" + expression + '}';
+        return '{' + expression + ", P= " + probability + '}';
     }
 }
