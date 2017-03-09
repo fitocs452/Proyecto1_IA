@@ -110,8 +110,8 @@ public class BayesNetworkEnumeration extends grammarBayesBaseVisitor {
         }
     }
     
-    public void calcEnumerationTotal(String exp, ArrayList<BayesNode> bayesNetwork) {
-        
+    public double calcEnumerationTotal(String exp, ArrayList<BayesNode> bayesNetwork) {
+        return 0;
     }
     
     public double enumerateNumerator(String exp, ArrayList<BayesNode> bayesNetwork) {

@@ -116,7 +116,7 @@ public class BayesNetwork {
                     enumeration.visit(networkParseTree);
                     enumeration.getHiddenVars(network);
 //                    pTotal = enumeration.includeExpression(pTotal, expression);
-                    double answer = enumeration.evaluateExpression(redBayesianaProbs, completeNetwork);
+                    double answer = enumeration.calcEnumerationTotal(redBayesianaProbs, completeNetwork);
                     JOptionPane.showMessageDialog(null, expression+" = "+answer);
 
                 }
