@@ -11,48 +11,35 @@ package searchalgorithms;
  */
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Queue;
+import java.util.Set;
 import java.util.Stack;
 
-/**
- *
- * @author Diego Jacobs
- */
 public class Dfs implements SearchFramework{
-    private Grafo Graph;
-    private ArrayList<Nodo> FinalPath;
-    private ArrayList<Nodo> Checked;
+    private Grafo grafo;
+    private Nodo nodoInicial;
+    private ArrayList<Nodo> nodosSalida;
+    private Set<Nodo> nodosEvaluados;
+    private ArrayList<Nodo> completePath;
+
+    private Queue<Nodo> queue;  
+    private ArrayList<Nodo> nodes=new ArrayList<Nodo>();
     
-    public Dfs(int sizeX, int sizeY, BufferedImage image){
-        this.Graph = new Grafo(sizeX, sizeY);
-        this.Graph.setColorsLogic(image);
-        this.Checked = new ArrayList<>();
+    public Dfs(int ancho, int alto, BufferedImage image) {
+        this.grafo = new Grafo(ancho, alto);
+        this.grafo.setColorsLogic(image);
+        this.nodoInicial = grafo.getNodoInicial();
+        this.nodosSalida = grafo.getNodosSalida();  
+        this.nodosEvaluados = new HashSet();
+        
     }
 
-    public Grafo getGraph() {
-        return Graph;
-    }
-
-    public void setGraph(Grafo Graph) {
-        this.Graph = Graph;
-    }
-
-    public ArrayList<Nodo> getFinalPath() {
-        return FinalPath;
-    }
-
-    public void setFinalPath(ArrayList<Nodo> FinalPath) {
-        this.FinalPath = FinalPath;
-    }
-
-    public ArrayList<Nodo> getChecked() {
-        return Checked;
-    }
-
-    public void Solve(){
-        this.FinalPath = Solve(this.Graph.getNodoInicial(), new ArrayList(), new ArrayList());
+    public void calcular(){
+        this.completePath = calcular(this.grafo.getNodoInicial(), new ArrayList(), new ArrayList());
     }
     
-    private ArrayList<Nodo> Solve(Nodo actualNode, ArrayList<Nodo> path,  ArrayList<Nodo> shortestPath) {
+    private ArrayList<Nodo> calcular(Nodo actualNode, ArrayList<Nodo> path,  ArrayList<Nodo> shortestPath) {
         path.add(actualNode);
       
         if (goalTest(actualNode))
@@ -61,13 +48,15 @@ public class Dfs implements SearchFramework{
         for (Action accion: actions(actualNode)) {
             Nodo nextNode = result(actualNode, accion);
             if (!nextNode.isObstaculo()) {
-                if (!this.Checked.contains(nextNode)) {
-                    this.Checked.add(nextNode);
+                if (!this.nodosEvaluados.contains(nextNode)) {
+                    this.nodosEvaluados.add(nextNode);
                     
                     if (shortestPath.isEmpty() || path.size() < shortestPath.size()) {
-                        ArrayList<Nodo> newPath = Solve(nextNode, path, shortestPath);
-                        if (!newPath.isEmpty())
+                        ArrayList<Nodo> newPath = calcular(nextNode, path, shortestPath);
+//                        System.out.println(newPath);
+                        if (!newPath.isEmpty()) {
                             shortestPath = newPath;
+                        }
                     }
                 }
             }
@@ -78,7 +67,7 @@ public class Dfs implements SearchFramework{
 
     @Override
     public ArrayList<Action> actions(Nodo node) {
-        return this.Graph.getNodosAdyacentes(node);
+        return this.grafo.getNodosAdyacentes(node);
     }
 
     @Override
@@ -95,12 +84,12 @@ public class Dfs implements SearchFramework{
 
     @Override
     public boolean goalTest(Nodo goal) {
-        return this.Graph.getNodosSalida().contains(goal);
+        return this.grafo.getNodosSalida().contains(goal);
     }
 
     @Override
     public Nodo result(Nodo node, Action action) {
-        if(node.equals(action.getFrom())){
+        if(node.equals(action.getFrom())) {
             return action.getTo();
         }
         
@@ -115,4 +104,46 @@ public class Dfs implements SearchFramework{
         
         return 0;
     }
+
+    public Grafo getGrafo() {
+        return grafo;
+    }
+
+    public void setGrafo(Grafo grafo) {
+        this.grafo = grafo;
+    }
+
+    public Set<Nodo> getNodosEvaluados() {
+        return nodosEvaluados;
+    }
+
+    public void setNodosEvaluados(Set<Nodo> nodosEvaluados) {
+        this.nodosEvaluados = nodosEvaluados;
+    }
+
+    public ArrayList<Nodo> getCompletePath() {
+        return completePath;
+    }
+
+    public void setCompletePath(ArrayList<Nodo> completePath) {
+        this.completePath = completePath;
+    }
+
+    public Queue<Nodo> getQueue() {
+        return queue;
+    }
+
+    public void setQueue(Queue<Nodo> queue) {
+        this.queue = queue;
+    }
+
+    public ArrayList<Nodo> getNodes() {
+        return nodes;
+    }
+
+    public void setNodes(ArrayList<Nodo> nodes) {
+        this.nodes = nodes;
+    }
+    
+    
 }

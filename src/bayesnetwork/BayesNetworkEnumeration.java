@@ -123,6 +123,11 @@ public class BayesNetworkEnumeration extends grammarBayesBaseVisitor {
         double total = 0;
         // totalPosibilities is the simulation of the sum(hiddenvariable)sum....
         int totalPosibilities = (int)Math.pow(2, hiddenVarsNumerator.size());
+        
+        // En caso todas las hidden vars esten listadas (Kevin Garcia, encontro el bug :D)
+        if (totalPosibilities == 0) {
+            return this.evaluateExpression(exp, bayesNetwork);
+        }
         for (int i = 0; i < totalPosibilities; i++) {
             // 1 -> 01, 2 -> 10, tomamos la representacion en la tabla
             String binRepresentation = Integer.toBinaryString(i);
