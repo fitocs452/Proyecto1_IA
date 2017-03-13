@@ -89,6 +89,7 @@ public class BayesNetworkEnumeration extends grammarBayesBaseVisitor {
         } else {
             hiddenVarsDenominator = new ArrayList();
         }
+        System.out.println("Denom vars: " + hiddenVarsDenominator);
     }
     
     public void getHiddenVarsX(String[] expVariables, ArrayList<BayesNode> bayesNetwork, String eval) {
@@ -111,7 +112,14 @@ public class BayesNetworkEnumeration extends grammarBayesBaseVisitor {
     }
     
     public double calcEnumerationTotal(String exp, ArrayList<BayesNode> bayesNetwork) {
-        return 0;
+       ArrayList<ArrayList<String>> pairs = new ArrayList();
+//       System.out.println("");
+       double res1 = enumerateNumerator(exp, bayesNetwork);
+       System.out.println("numerator: " + res1);
+//       System.out.println("");
+       double res2 = enumerateDenominator(exp, bayesNetwork);
+       System.out.println("denominator: " + res2);
+       return res1/res2;
     }
     
     public double enumerateNumerator(String exp, ArrayList<BayesNode> bayesNetwork) {
@@ -142,6 +150,7 @@ public class BayesNetworkEnumeration extends grammarBayesBaseVisitor {
             
             String expExtended = generateNewExpression(exp, new ArrayList(Arrays.asList(strHiddenVars)));
             total += evaluateExpression(expExtended, bayesNetwork);
+            System.out.println("sum: " + total);
         }
         return total;
     }
@@ -149,6 +158,7 @@ public class BayesNetworkEnumeration extends grammarBayesBaseVisitor {
     public double enumerateDenominator(String exp, ArrayList<BayesNode> bayesNetwork) {
         double total = 0;
         int totalHiddenVars = hiddenVarsDenominator.size();
+        System.out.println("Denom vars: " + hiddenVarsDenominator);
         if (totalHiddenVars == 0) {
             return 1; // Return 1, porque no podemos dividir dentro de 0
         }
@@ -213,7 +223,7 @@ public class BayesNetworkEnumeration extends grammarBayesBaseVisitor {
     }
     
     public double evaluateExpression(String expression, ArrayList<BayesNode> completeNetwork) {
-        System.out.println(expression);
+//        System.out.println(expression);
         String[] arrayExpr = expression.split(":");
         double prob = 1;
         for (int i = 0; i < arrayExpr.length;i++) {
@@ -227,7 +237,33 @@ public class BayesNetworkEnumeration extends grammarBayesBaseVisitor {
             }
             
         }
-        System.out.println(prob);
+        System.out.println("prob: " + prob);
         return prob;
     }
+    
+   public String includeExpression(String pTotal, String expression) {
+       expression = expression.replaceAll("\\s+","");
+       ArrayList<String> negated = new ArrayList();
+       for (int i = 0; i < expression.length(); i++) {
+           char ch = expression.charAt(i);
+           if (ch == '!' && i < expression.length()-1) {
+               negated.add("!" + expression.charAt(i+1));
+           }
+       }
+       String newExpression = "";
+       for (int i = 0; i < pTotal.length(); i++) {
+           char ch = pTotal.charAt(i);
+           String newVar = "";
+           for (int j = 0; j < negated.size(); j++) {
+              String neg = negated.get(j);
+              neg = neg.replace("!", "");
+              if (ch == neg.toCharArray()[0]) {
+                  newVar = "!";
+              }
+           }
+           newExpression += newVar + ch;
+       }
+       return newExpression;
+       
+   }
 }
