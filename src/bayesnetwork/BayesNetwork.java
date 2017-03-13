@@ -51,6 +51,7 @@ public class BayesNetwork {
             // Generamos el la tabla de nodos (variables en red bayesiana)
             BayesNetworkTable table = new BayesNetworkTable();
             table.visit(networkParseTree);
+            table.generateAllPossibilitiesTable();
             
             // Obtenemos el string total que describe toda nuestra red bayesiana
             String redBayesianaProbs = table.getTableExp();

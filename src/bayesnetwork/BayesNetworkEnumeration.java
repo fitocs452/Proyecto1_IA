@@ -84,7 +84,7 @@ public class BayesNetworkEnumeration extends grammarBayesBaseVisitor {
         getHiddenVarsX(numeratorVariables, bayesNetwork, "numerator");
         
         if (!denominator.isEmpty()) {
-            String[] denominatorVariables = numerator.split(",");
+            String[] denominatorVariables = denominator.split(",");
             getHiddenVarsX(denominatorVariables, bayesNetwork, "denominator");
         } else {
             hiddenVarsDenominator = new ArrayList();
@@ -112,11 +112,8 @@ public class BayesNetworkEnumeration extends grammarBayesBaseVisitor {
     }
     
     public double calcEnumerationTotal(String exp, ArrayList<BayesNode> bayesNetwork) {
-       ArrayList<ArrayList<String>> pairs = new ArrayList();
-//       System.out.println("");
        double res1 = enumerateNumerator(exp, bayesNetwork);
        System.out.println("numerator: " + res1);
-//       System.out.println("");
        double res2 = enumerateDenominator(exp, bayesNetwork);
        System.out.println("denominator: " + res2);
        return res1/res2;
@@ -168,7 +165,8 @@ public class BayesNetworkEnumeration extends grammarBayesBaseVisitor {
             return 1; // Return 1, porque no podemos dividir dentro de 0
         }
         
-        for (int i = 0; i < totalHiddenVars; i++) {
+        int totalPosibilities = (int)Math.pow(2, totalHiddenVars);
+        for (int i = 0; i < totalPosibilities; i++) {
             // 1 -> 01, 2 -> 10, tomamos la representacion en la tabla
             String binRepresentation = Integer.toBinaryString(i);
             // Normalizamos la representacion a la cantidad de variables que tenemos
