@@ -139,14 +139,19 @@ public class BayesNetworkEnumeration extends grammarBayesBaseVisitor {
             String[] strHiddenVars = new String[hiddenVarsNumerator.size()];
             
             for (int j = 0; j < hiddenVarsNumerator.size(); j++) {
-                if (bin[j] == '0') {
-                    // si la variable es TRUE, la agregamos normal
-                    strHiddenVars[j] = hiddenVarsNumerator.get(j);
-                } else {
-                    // Si la varaible es FALSE, la negamos
-                    strHiddenVars[j] = "!" + hiddenVarsNumerator.get(j);
-                }
+               for (int k = 0; k < bin.length; k++) {
+                   if (j == k) {
+                        if (bin[k] == '0') {
+                            // si la variable es TRUE, la agregamos normal
+                            strHiddenVars[k] = hiddenVarsNumerator.get(j);
+                        } else {
+                            // Si la varaible es FALSE, la negamos
+                            strHiddenVars[k] = "!" + hiddenVarsNumerator.get(j);
+                        }
+                   }
+               }
             }
+            
             
             String expExtended = generateNewExpression(exp, new ArrayList(Arrays.asList(strHiddenVars)));
             total += evaluateExpression(expExtended, bayesNetwork);
@@ -158,7 +163,7 @@ public class BayesNetworkEnumeration extends grammarBayesBaseVisitor {
     public double enumerateDenominator(String exp, ArrayList<BayesNode> bayesNetwork) {
         double total = 0;
         int totalHiddenVars = hiddenVarsDenominator.size();
-        System.out.println("Denom vars: " + hiddenVarsDenominator);
+//        System.out.println("Denom vars: " + hiddenVarsDenominator);
         if (totalHiddenVars == 0) {
             return 1; // Return 1, porque no podemos dividir dentro de 0
         }
@@ -176,13 +181,17 @@ public class BayesNetworkEnumeration extends grammarBayesBaseVisitor {
             String[] strHiddenVars = new String[hiddenVarsDenominator.size()];
             
             for (int j = 0; j < hiddenVarsDenominator.size(); j++) {
-                if (bin[j] == '0') {
-                    // si la variable es TRUE, la agregamos normal
-                    strHiddenVars[j] = hiddenVarsDenominator.get(j);
-                } else {
-                    // Si la varaible es FALSE, la negamos
-                    strHiddenVars[j] = "!" + hiddenVarsDenominator.get(j);
-                }
+               for (int k = 0; k < bin.length; k++) {
+                   if (j == k) {
+                        if (bin[k] == '0') {
+                            // si la variable es TRUE, la agregamos normal
+                            strHiddenVars[k] = hiddenVarsDenominator.get(j);
+                        } else {
+                            // Si la varaible es FALSE, la negamos
+                            strHiddenVars[k] = "!" + hiddenVarsDenominator.get(j);
+                        }
+                   }
+               }
             }
             
             String expExtended = generateNewExpression(exp, new ArrayList(Arrays.asList(strHiddenVars)));
@@ -235,7 +244,6 @@ public class BayesNetworkEnumeration extends grammarBayesBaseVisitor {
                     }
                 }
             }
-            
         }
         System.out.println("prob: " + prob);
         return prob;
