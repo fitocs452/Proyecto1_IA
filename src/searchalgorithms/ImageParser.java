@@ -28,7 +28,7 @@ public class ImageParser {
         
         try {
            // get the BufferedImage, using the ImageIO class
-            BufferedImage image = ImageIO.read( new File("lab.png"));
+            BufferedImage image = ImageIO.read( new File("7.jpg"));
             this.resized = this.resize(image);
 
         } catch (IOException e) {

@@ -19,7 +19,7 @@ public class SearchAlgorithms {
     public static void main(String[] args) {
         // TODO code application logic here
         
-        int size = 25;
+        int size = 30;
         ImageParser parse = new ImageParser(size);
         AStar astar = new AStar(size, size, parse.getResized());
         astar.calcular(false,false,false, false);
@@ -54,21 +54,21 @@ public class SearchAlgorithms {
         );
         windowBFS.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        Dfs dfs = new Dfs(size, size, parse.getResized());
-        dfs.calcular();
-        
-        JFrame windowDFS = new JFrame();
-        windowBFS.setSize(450, 450);
-        windowBFS.setLocationRelativeTo(null);
-        windowBFS.setVisible(true);
-        windowDFS.add(
-                new GrafoGrafico(
-                    size,size, 
-                    parse.getResized(), dfs.getCompletePath(), 
-                    dfs.getNodosEvaluados(), dfs.getGrafo()
-               )
-        );
-        windowBFS.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        Dfs dfs = new Dfs(size, size, parse.getResized());
+//        dfs.calcular();
+//        
+//        JFrame windowDFS = new JFrame();
+//        windowBFS.setSize(450, 450);
+//        windowBFS.setLocationRelativeTo(null);
+//        windowBFS.setVisible(true);
+//        windowDFS.add(
+//                new GrafoGrafico(
+//                    size,size, 
+//                    parse.getResized(), dfs.getCompletePath(), 
+//                    dfs.getNodosEvaluados(), dfs.getGrafo()
+//               )
+//        );
+//        windowBFS.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
 }
